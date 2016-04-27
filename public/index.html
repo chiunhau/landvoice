@@ -4,29 +4,26 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta property="og:image" content="http://jinglebell.parseapp.com/images/ogimage.png"/>
-  <meta property="og:description" content="在這個寒冷的季節裡，將頭貼換上一個小丑鼻子暖暖身子吧！" />
-  <title>紅色狂想。2015台科大設計系音樂派對</title>
+  <meta property="og:image" content="images/ogimage.png"/>
+  <meta property="og:description" content="我可能不同意你，但我誓死捍衛你說話的權利" />
+  <title>異起換個頭貼 - 2016台灣科大設計週</title>
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-
   <div class="container">
     <img class="head-pic" src="images/slice1.png" />
-    <button id="login">臉書登入</button>
-
-    <a id="download" href="#">下載頭像</a>
-    <p>登入臉書，點擊並拖曳綠色條子，用你最喜歡的大小，放在你最喜歡的地方。<br/>換好頭貼，不要忘記，5/7 ─ 5/15，異起用設計，話出台灣心聲<br/>（使用電腦版體驗最佳）</p>
-    
+    <button id="login" class="button">臉書登入</button>
+    <a id="download" class="button" href="#">下載頭像</a>
+    <p>
+      登入臉書，點擊並拖曳綠色條子，用你最喜歡的大小，放在你最喜歡的地方。<br/>換好頭貼，不要忘記，5/7 ─ 5/15，異起用設計，話出台灣心聲<br/>（使用電腦版體驗最佳）
+    </p>
     <canvas id="c" width="400" height="400"></canvas>
-    <p style="margin-top:50px">設計是需要時間粹練的，花點精神，研究一下要放在哪吧！<br/>如果有 Bug 就重新整理，再 Try 一下，這是一句好話
-<br/>Built with great love by <a class="behance" href="https://www.facebook.com/chiunhauyou" target="_blank">宭鎬</a></p>
-    
-
-    
+    <p style="margin-top:50px">
+      設計是需要時間粹練的，花點精神，研究一下要放在哪吧！<br/>如果有 Bug 就重新整理，再 Try 一下，這是一句好話<br/>———<br/><a class="behance" href="https://www.facebook.com/chiunhauyou" target="_blank">宭鎬 </a>製作 <3
+    </p>
   </div>
   
-  <script type="text/javascript" src="javascripts/fabric.js"></script>
+  <script type="text/javascript" src="javascripts/fabric.min.js"></script>
   <script type="text/javascript">
     //Facebook things
 
@@ -81,28 +78,18 @@
 
       return img;
     }
-
-
+    
     window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '966974170065904',
-        xfbml      : true,
-        version    : 'v2.5'
-      });
+        FB.init({
+          appId      : '966974170065904',
+          xfbml      : true,
+          version    : 'v2.6'
+        });
 
-      FB.getLoginStatus(function(response) {
-        statusChangeCallback(response);
-      });
-    };
-  
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      };
 
     function startCanvas(imgURL) {
       var canvas = new fabric.Canvas('c');
@@ -127,43 +114,32 @@
           cornerColor: '#e40076',
           cornerSize: 16,
           crossOrigin: 'anonymous'})
-        // fabric.Image.fromURL('images/filter.png', function(fImg) {
-        //   canvas.add(fImg);
-        //   var circle = new fabric.Circle({
-        //     left: 180,
-        //     top: 180,
-        //     radius: 25,
-        //     fill: 'rgb(233, 75, 70)',
-        //     lockUniScaling: true,
-        //     lockRotation: true,
-        //     stroke: 'white',
-        //     strokeWidth: 3,
-        //     cornerColor: '#fff'
-        //   });
-        //   canvas.add(circle);
-        // },  { lockMovementX: true, lockMovementY: true , width: 400, height: 400, crossOrigin: 'anonymous'})
-        
-        
       }, { lockMovementX: true, lockMovementY: true , width: 400, height: 400, crossOrigin: 'anonymous'});
       
       function downloadImage(link, canvasId, filename) {
         link.href = document.getElementById('myCanvas').toDataURL();
         link.download =filename;
       }
-
       document.getElementById('download').addEventListener('click', function() {
         canvas.deactivateAll().renderAll();  
         // // window.open(canvas.toDataURL('png'));
         // // downloadImage(this, 'myCanvas', 'PrayForSyria.png');
         this.href = canvas.toDataURL('png');
-        this.download = 'JingleAllTheWay.png';
+        this.download = 'landvoice.png';
       });
     }
 
     document.getElementById('login').addEventListener('click', function() {
       login();
     });
-
+    
+    (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
   </script>
 </body>
 </html>
