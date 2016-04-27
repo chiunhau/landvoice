@@ -15,7 +15,7 @@
     <button id="login" class="button">臉書登入</button>
     <a id="download" class="button" href="#">下載頭像</a>
     <p>
-      登入臉書，點擊並拖曳綠色條子，用你最喜歡的大小，放在你最喜歡的地方。<br/>換好頭貼，不要忘記，5/7 ─ 5/15，異起用設計，話出台灣心聲<br/>（使用電腦版體驗最佳）
+      登入臉書，點擊並拖曳綠色條子，用你最喜歡的大小，放在你最喜歡的地方。<br/>換好頭貼，不要忘記，5/7 ─ 5/15，異起用設計，話出台灣心聲<br/>（請用電腦操作，不要用手機開會崩潰Orz）
     </p>
     <canvas id="c" width="400" height="400"></canvas>
     <p style="margin-top:50px">
@@ -26,7 +26,7 @@
   <script type="text/javascript" src="javascripts/fabric.min.js"></script>
   <script type="text/javascript">
     //Facebook things
-
+   var originWidth;
     function statusChangeCallback(response) {
       console.log('statusChangeCallback');
       console.log(response);
@@ -64,7 +64,7 @@
     }
     function testAPI() {
       console.log('Welcome!  Fetching your information.... ');
-      FB.api('/me/picture?width=400&height=400', function(response) {
+      FB.api('/me/picture?width=2000', function(response) {
         console.log(response.data.url);
         startCanvas(response.data.url);
       });
@@ -79,6 +79,33 @@
       return img;
     }
     
+    function zoom (width, canvas){
+      var scale = width / canvas.getWidth();
+      var height = scale * canvas.getHeight();
+
+      canvas.setDimensions({
+          "width": width,
+          "height": height
+      });
+
+      canvas.calcOffset();
+      var objects = canvas.getObjects();
+      for (var i in objects) {
+          var scaleX = objects[i].scaleX;
+          var scaleY = objects[i].scaleY;
+          var left = objects[i].left;
+          var top = objects[i].top;
+
+          objects[i].scaleX = scaleX * scale;
+          objects[i].scaleY = scaleY * scale;
+          objects[i].left = left * scale;
+          objects[i].top = top * scale;
+
+          objects[i].setCoords();
+      }
+      canvas.renderAll();
+    }
+
     window.fbAsyncInit = function() {
         FB.init({
           appId      : '966974170065904',
@@ -93,6 +120,7 @@
 
     function startCanvas(imgURL) {
       var canvas = new fabric.Canvas('c');
+      originWidth = canvas.getWidth();
       fabric.Image.fromURL(imgURL, function(oImg) {        
         var redFilter = new fabric.Image.filters.Blend({
           color: '#e40076',
@@ -111,21 +139,24 @@
           lockUniScaling: true, 
           scaleX: 0.5, 
           scaleY: 0.5,
-          cornerColor: '#e40076',
+          cornerColor: '#fff',
           cornerSize: 16,
           crossOrigin: 'anonymous'})
       }, { lockMovementX: true, lockMovementY: true , width: 400, height: 400, crossOrigin: 'anonymous'});
       
-      function downloadImage(link, canvasId, filename) {
+      function downloadImage(link, fabricCanvas, expectedWidth, canvasId, filename) {
+
         link.href = document.getElementById('myCanvas').toDataURL();
         link.download =filename;
       }
       document.getElementById('download').addEventListener('click', function() {
-        canvas.deactivateAll().renderAll();  
+        zoom(1200, canvas);
+        canvas.deactivateAll().renderAll();
         // // window.open(canvas.toDataURL('png'));
         // // downloadImage(this, 'myCanvas', 'PrayForSyria.png');
         this.href = canvas.toDataURL('png');
         this.download = 'landvoice.png';
+        zoom(originWidth, canvas);
       });
     }
 

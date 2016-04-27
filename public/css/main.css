@@ -28,13 +28,14 @@ body {
   letter-spacing: 1px;
   border-style: none;
   padding: 10px;
+  text-decoration: none;
 }
 
 .button:hover {
   cursor: pointer;
   background-color: #f5f5f5;
 }
-a:link, a:visited, a:hover, a:active {
+.me:link, .me:visited, .me:hover, .me:active {
   color: yellow;
   text-decoration: none;
 
