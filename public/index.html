@@ -15,7 +15,7 @@
     <button id="login" class="button">臉書登入</button>
     <a id="download" class="button" href="#">下載頭像</a>
     <p>
-      登入臉書，點擊並拖曳綠色條子，用你最喜歡的大小，放在你最喜歡的地方。<br/>換好頭貼，不要忘記，5/7 ─ 5/15，異起用設計，話出台灣心聲<br/>（請用電腦操作，不要用手機開會崩潰Orz）
+      登入臉書，點擊並拖曳綠色條子，用你最喜歡的大小，放在你最喜歡的地方。<br/>換好頭貼，不要忘記，5/7 ─ 5/15，異起用設計，話出台灣心聲<br/>（電腦操作體驗最佳<3）
     </p>
     <canvas id="c" width="400" height="400"></canvas>
     <p style="margin-top:50px">
@@ -79,7 +79,7 @@
       return img;
     }
     
-    function zoom (width, canvas){
+    function zoom (width, canvas, cb){
       var scale = width / canvas.getWidth();
       var height = scale * canvas.getHeight();
 
@@ -103,7 +103,8 @@
 
           objects[i].setCoords();
       }
-      canvas.renderAll();
+      canvas.deactivateAll().renderAll();
+      cb();
     }
 
     window.fbAsyncInit = function() {
@@ -125,7 +126,6 @@
         var redFilter = new fabric.Image.filters.Blend({
           color: '#e40076',
           mode: 'lighten'
-
         });
         oImg.filters.push(redFilter);
         oImg.applyFilters(canvas.renderAll.bind(canvas));
@@ -150,13 +150,17 @@
         link.download =filename;
       }
       document.getElementById('download').addEventListener('click', function() {
-        zoom(1200, canvas);
-        canvas.deactivateAll().renderAll();
-        // // window.open(canvas.toDataURL('png'));
-        // // downloadImage(this, 'myCanvas', 'PrayForSyria.png');
-        this.href = canvas.toDataURL('png');
-        this.download = 'landvoice.png';
-        zoom(originWidth, canvas);
+        console.log('get click');
+        var that = this;
+        zoom(1000, canvas, function() {
+          console.log('hello');
+          console.log(that)
+          that.href = canvas.toDataURL('png');
+          that.download = 'landvoice.png';
+          zoom(originWidth, canvas,function() {
+            console.log('should be done')
+          });
+        });
       });
     }
 
